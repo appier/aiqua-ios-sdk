@@ -527,6 +527,55 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*!
 @abstract
+Handles Universal Link callback for ad tracking
+ 
+@discussion
+This will handle url for APPIER Ads tracking
+ 
+@code
+ // iOS 10+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity
+  restorationHandler:(void (^)(NSArray *))restorationHandler {
+    .
+    .
+    [[QGSdk getSharedInstance] continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return YES;
+}
+@endcode
+*/
+- (void)continueUserActivity:(NSUserActivity *)userActivity
+          restorationHandler:(nullable void (^)(NSArray<id> *restorableObjects))restorationHandler API_AVAILABLE(ios(10.0));
+
+/*!
+@abstract
+Handles URL Scheme callback for ad tracking
+
+@discussion
+This will handle url for APPIER Ads tracking. AIQUA SDK will NOT redirect to particular screen related the url. It is intended for APPIER ads attribution.
+ 
+@code
+ // iOS 10+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+    .
+    .
+    [[QGSdk getSharedInstance] handleURL:url withOptions:options];
+    return YES;
+ }
+ 
+ // iOS 8, 9
+ - (void)application:(UIApplication *)application openURL:(nonnull NSURL *)url
+    sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
+    .
+    .
+    [[QGSdk getSharedInstance] handleURL:url withOptions:nil];
+ }
+@endcode
+*/
+- (void)handleURL:(NSURL *)url withOptions:(nullable NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options;
+
+/*!
+@abstract
 Get locally saved push notification data, which is a list of notification payload
 
 @discussion
